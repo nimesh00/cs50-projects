@@ -50,10 +50,13 @@ int main(int argc, string argv[])
         haystack[size] = straw;
     }
     printf("\n");
-
+    
     // sort the haystack
     sort(haystack, size);
-
+    for (int i = 0; i < size; i++)
+    {
+        printf("haytsack[%i] = %i\n",i,haystack[i]);
+    }
     // try to find needle in haystack
     if (search(needle, haystack, size))
     {

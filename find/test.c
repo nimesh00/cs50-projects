@@ -8,6 +8,7 @@
  */
        
 #include <cs50.h>
+#include <stdio.h>
 
 #include "helpers.h"
 
@@ -22,6 +23,7 @@ bool search(int value, int values[], int n)
     while( end - beg >= 1)
     {
         int mid = (beg + end) / 2;
+        printf("beg = %i\nend = %i\nmid = %i\n",beg,end,mid);
         if(value == values[mid])
         {
            return true;
@@ -38,7 +40,6 @@ bool search(int value, int values[], int n)
     }
     return false;
 }
-
 
 /**
  * Sorts array of n values.
@@ -62,4 +63,32 @@ void sort(int values[], int n)
                 }
             }
     }
+}
+int main()
+{
+    int a[10];
+    int i = 0;
+    for (i = 0; i < 10; i++)
+    {
+        printf("enter the %i element : ",i + 1);
+        a[i] = GetInt();
+        printf("\n");
+    }
+    sort(a,10);
+    printf("after sorting : \n");
+    for (i = 0; i < 10; i++)
+    {
+        printf("%i\n",a[i]);
+    }
+    printf("things go right till this line \n");
+    if(search(2,a,10))
+    {
+        printf("2 is in the list\n");
+    }
+    else
+    {
+        printf("2 is not in the list\n");
+    }
+    return 0;
+    
 }
