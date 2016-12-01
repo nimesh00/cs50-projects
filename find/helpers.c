@@ -19,20 +19,20 @@ bool search(int value, int values[], int n)
     // TODO: implement a searching algorithm
     int beg = 0;
     int end = n;
-    while( end - beg >= 1)
+    while ( end >= beg)
     {
         int mid = (beg + end) / 2;
-        if(value == values[mid])
+        if (value == values[mid])
         {
-           return true;
+            return true;
         }
-        else if(value < values[mid])
+        else if (value < values[mid])
         {
-            end = mid;
+            end = mid - 1;
         }
         else if (value > values[mid])
         {
-            beg = mid;
+            beg = mid + 1;
         }
         
     }
@@ -48,18 +48,18 @@ void sort(int values[], int n)
     // TODO: implement an O(n^2) sorting algorithm
     int temp;
     int swaps = 1;
-    while(swaps!=0)
+    while (swaps != 0)
     {
         swaps = 0;
-        for (int i = 0;i < n-1; i++)
+        for (int i = 0;i < n - 1; i++)
+        {
+            if (values[i] > values[i + 1])
             {
-                if(values[i]>values[i+1])
-                {
-                    temp = values[i];
-                    values[i] = values[i+1];
-                    values[i+1] = temp;
-                    swaps++;
-                }
+                temp = values[i];
+                values[i] = values[i + 1];
+                values[i + 1] = temp;
+                swaps++;
             }
+        }
     }
 }

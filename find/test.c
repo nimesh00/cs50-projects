@@ -20,7 +20,7 @@ bool search(int value, int values[], int n)
     // TODO: implement a searching algorithm
     int beg = 0;
     int end = n;
-    while( end - beg >= 1)
+    while( beg <= end)
     {
         int mid = (beg + end) / 2;
         printf("beg = %i\nend = %i\nmid = %i\n",beg,end,mid);
@@ -30,11 +30,11 @@ bool search(int value, int values[], int n)
         }
         else if(value < values[mid])
         {
-            end = mid;
+            end = mid - 1;
         }
         else if (value > values[mid])
         {
-            beg = mid;
+            beg = mid + 1;
         }
         
     }
