@@ -31,7 +31,8 @@ int board[DIM_MAX][DIM_MAX];
 
 // dimensions
 int d;
-
+int blank_tiler;
+int blank_tilec;
 // prototypes
 void clear(void);
 void greet(void);
@@ -51,6 +52,9 @@ int main(int argc, string argv[])
 
     // ensure valid dimensions
     d = atoi(argv[1]);
+    blank_tiler = d - 1;
+    blank_tilec = d - 1;
+
     if (d < DIM_MIN || d > DIM_MAX)
     {
         printf("Board must be between %i x %i and %i x %i, inclusive.\n",
@@ -120,11 +124,11 @@ int main(int argc, string argv[])
         if (!move(tile))
         {
             printf("\nIllegal move.\n");
-            usleep(500000);
+            usleep(100000);
         }
 
         // sleep thread for animation's sake
-        usleep(500000);
+        usleep(100000);
     }
     
     // close log
@@ -150,7 +154,7 @@ void greet(void)
 {
     clear();
     printf("WELCOME TO GAME OF FIFTEEN\n");
-    usleep(2000000);
+    usleep(500000);
 }
 
 /**
@@ -159,7 +163,26 @@ void greet(void)
  */
 void init(void)
 {
-    // TODO
+    // giving values to tiles as per the dimensions
+    int val = d * d;
+    int temp;
+    for (int i = 0; i < d; i++)
+    {
+        for ( int j = 0; j < d; j++)
+        {
+            val--;
+            board[i][j] = val;
+            
+        }
+    }
+    if (d == 4)
+    {
+        temp = board[3][1];
+        board[3][1] = board[3][2];
+        board[3][2] = temp;
+    }
+        
+    
 }
 
 /**
@@ -167,7 +190,22 @@ void init(void)
  */
 void draw(void)
 {
-    // TODO
+    // printing out the board
+    for (int i = 0; i < d; i++)
+    {
+        for (int j = 0; j < d; j++)
+        {
+            if (i == blank_tiler && j == blank_tilec)
+            {
+                printf("  _");
+            }
+            else
+            {
+                printf("%4d",board[i][j]);
+            }
+        }
+        printf("\n");
+    }
 }
 
 /**
@@ -176,7 +214,24 @@ void draw(void)
  */
 bool move(int tile)
 {
-    // TODO
+    // checking the position and then swapping the values of blank tile and tile
+    for (int  i = 0; i < d; i++)
+    {
+        for (int j = 0; j < d; j++)
+        {
+            if (board[i][j] == tile)
+            {
+                if ((i == blank_tiler || i == blank_tiler - 1 || i == blank_tiler + 1) && (j == blank_tilec || j == blank_tilec - 1 || j == blank_tilec + 1))
+                {
+                    board[blank_tiler][blank_tilec] = board[i][j];
+                    blank_tiler = i;
+                    blank_tilec = j;
+                    board[blank_tiler][blank_tilec] = 0;
+                    return true;
+                }
+            }
+        }
+    }
     return false;
 }
 
@@ -187,5 +242,29 @@ bool move(int tile)
 bool won(void)
 {
     // TODO
+    int swaps = 0;
+    int f = d * d;
+    int a[f];
+    int k = 0;
+    for ( int i = 0; i < d; i++)
+    {
+        for (int j = 0; j < d; j++)
+        {
+            a[k++] = board[i][j]; 
+        }
+    }
+    for (int i = 0; i < f; i++)
+    {
+        //printf("%i\n",a[i]);
+        if (a[i] > a[i + 1])
+        {
+            swaps++;
+        }
+    }
+    //printf("swaps : %i \n",swaps);
+    if(swaps == 1 && board[d - 1][d - 1] == 0)
+    {
+        return true;
+    }
     return false;
 }
