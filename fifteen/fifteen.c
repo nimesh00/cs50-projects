@@ -30,7 +30,7 @@
 int board[DIM_MAX][DIM_MAX];
 
 // dimensions
-int d;
+int dim;
 int blank_tiler;
 int blank_tilec;
 // prototypes
@@ -51,11 +51,11 @@ int main(int argc, string argv[])
     }
 
     // ensure valid dimensions
-    d = atoi(argv[1]);
-    blank_tiler = d - 1;
-    blank_tilec = d - 1;
+    dim = atoi(argv[1]);
+    blank_tiler = dim - 1;
+    blank_tilec = dim - 1;
 
-    if (d < DIM_MIN || d > DIM_MAX)
+    if (dim < DIM_MIN || dim > DIM_MAX)
     {
         printf("Board must be between %i x %i and %i x %i, inclusive.\n",
             DIM_MIN, DIM_MIN, DIM_MAX, DIM_MAX);
@@ -85,12 +85,12 @@ int main(int argc, string argv[])
         draw();
 
         // log the current state of the board (for testing)
-        for (int i = 0; i < d; i++)
+        for (int i = 0; i < dim; i++)
         {
-            for (int j = 0; j < d; j++)
+            for (int j = 0; j < dim; j++)
             {
                 fprintf(file, "%i", board[i][j]);
-                if (j < d - 1)
+                if (j < dim - 1)
                 {
                     fprintf(file, "|");
                 }
@@ -164,18 +164,18 @@ void greet(void)
 void init(void)
 {
     // giving values to tiles as per the dimensions
-    int val = d * d;
+    int val = dim * dim;
     int temp;
-    for (int i = 0; i < d; i++)
+    for (int i = 0; i < dim; i++)
     {
-        for ( int j = 0; j < d; j++)
+        for ( int j = 0; j < dim; j++)
         {
             val--;
             board[i][j] = val;
             
         }
     }
-    if (d == 4)
+    if (dim == 4)
     {
         temp = board[3][1];
         board[3][1] = board[3][2];
@@ -191,9 +191,9 @@ void init(void)
 void draw(void)
 {
     // printing out the board
-    for (int i = 0; i < d; i++)
+    for (int i = 0; i < dim; i++)
     {
-        for (int j = 0; j < d; j++)
+        for (int j = 0; j < dim; j++)
         {
             if (i == blank_tiler && j == blank_tilec)
             {
@@ -215,13 +215,21 @@ void draw(void)
 bool move(int tile)
 {
     // checking the position and then swapping the values of blank tile and tile
-    for (int  i = 0; i < d; i++)
+    for (int  i = 0; i < dim; i++)
     {
-        for (int j = 0; j < d; j++)
+        for (int j = 0; j < dim; j++)
         {
             if (board[i][j] == tile)
             {
-                if ((i == blank_tiler || i == blank_tiler - 1 || i == blank_tiler + 1) && (j == blank_tilec || j == blank_tilec - 1 || j == blank_tilec + 1)&& !(i == blank_tiler + 1 && j == blank_tilec + 1)&& !(i == blank_tiler - 1 && j == blank_tilec - 1)&& !(i == blank_tiler + 1 && j == blank_tilec - 1)&& !(i == blank_tiler - 1 && j == blank_tilec + 1))
+                // giving all possible directions to go and not to go
+                if ((i == blank_tiler || i == blank_tiler - 1 
+                    || i == blank_tiler + 1) 
+                    && (j == blank_tilec || j == blank_tilec - 1 
+                    || j == blank_tilec + 1)
+                    && !(i == blank_tiler + 1 && j == blank_tilec + 1)
+                    && !(i == blank_tiler - 1 && j == blank_tilec - 1)
+                    && !(i == blank_tiler + 1 && j == blank_tilec - 1)
+                    && !(i == blank_tiler - 1 && j == blank_tilec + 1))
                 {
                     board[blank_tiler][blank_tilec] = board[i][j];
                     blank_tiler = i;
@@ -243,24 +251,24 @@ bool won(void)
 {
     // TODO
     int swaps = 0;
-    int f = d * d;
-    int a[f];
+    int f = dim * dim;
+    int array[f];
     int k = 0;
-    for ( int i = 0; i < d; i++)
+    for ( int i = 0; i < dim; i++)
     {
-        for (int j = 0; j < d; j++)
+        for (int j = 0; j < dim; j++)
         {
-            a[k++] = board[i][j]; 
+            array[k++] = board[i][j]; 
         }
     }
     for (int i = 0; i < f; i++)
     {
-        if (a[i] > a[i + 1])
+        if (array[i] > array[i + 1])
         {
             swaps++;
         }
     }
-    if(swaps == 1 && board[d - 1][d - 1] == 0)
+    if (swaps == 1 && board[dim - 1][dim - 1] == 0)
     {
         return true;
     }
