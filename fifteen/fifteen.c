@@ -124,11 +124,11 @@ int main(int argc, string argv[])
         if (!move(tile))
         {
             printf("\nIllegal move.\n");
-            usleep(100000);
+            usleep(300000);
         }
 
         // sleep thread for animation's sake
-        usleep(100000);
+        usleep(300000);
     }
     
     // close log
@@ -221,7 +221,7 @@ bool move(int tile)
         {
             if (board[i][j] == tile)
             {
-                if ((i == blank_tiler || i == blank_tiler - 1 || i == blank_tiler + 1) && (j == blank_tilec || j == blank_tilec - 1 || j == blank_tilec + 1))
+                if ((i == blank_tiler || i == blank_tiler - 1 || i == blank_tiler + 1) && (j == blank_tilec || j == blank_tilec - 1 || j == blank_tilec + 1)&& !(i == blank_tiler + 1 && j == blank_tilec + 1)&& !(i == blank_tiler - 1 && j == blank_tilec - 1)&& !(i == blank_tiler + 1 && j == blank_tilec - 1)&& !(i == blank_tiler - 1 && j == blank_tilec + 1))
                 {
                     board[blank_tiler][blank_tilec] = board[i][j];
                     blank_tiler = i;
@@ -255,13 +255,11 @@ bool won(void)
     }
     for (int i = 0; i < f; i++)
     {
-        //printf("%i\n",a[i]);
         if (a[i] > a[i + 1])
         {
             swaps++;
         }
     }
-    //printf("swaps : %i \n",swaps);
     if(swaps == 1 && board[d - 1][d - 1] == 0)
     {
         return true;
