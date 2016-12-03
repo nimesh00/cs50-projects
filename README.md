@@ -1,1 +1,1 @@
-  it was just a try as i was using git for first time. :)
+ using this repository for my sophomores projects in cs50
